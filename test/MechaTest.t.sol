@@ -51,7 +51,7 @@ contract MechaTest is Test {
     *   @dev Pranks the user to mint an NFT
     *   @param amount The amount to try minting the NFT
     */
-    function _mintTo(uint256 amount) internal returns (uint256 tokenId) {
+    function _mint(uint256 amount) internal returns (uint256 tokenId) {
         tokenId = mecha.mint{value: amount}();
     }
 }

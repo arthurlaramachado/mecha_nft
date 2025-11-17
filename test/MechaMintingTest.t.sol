@@ -13,7 +13,7 @@ contract MechaMintingTest is MechaTest {
 
     function testMintWithRightPrice() public {
         vm.prank(user1);
-        uint256 tokenId = _mintTo(amount);
+        uint256 tokenId = _mint(amount);
 
         assertEq(mecha.ownerOf(tokenId), user1);
         assertEq(mecha.balanceOf(user1), 1);
@@ -23,19 +23,19 @@ contract MechaMintingTest is MechaTest {
         vm.prank(user1);
         vm.expectRevert("Invalid amount of ether");
 
-        _mintTo(amount + 1);
+        _mint(amount + 1);
     }
 
     function testMintLowerAmountRevert() public {
         vm.prank(user1);
         vm.expectRevert("Invalid amount of ether");
         
-        _mintTo(0);
+        _mint(0);
     }
 
     function testMintTokenAttributesCreated() public {
         vm.prank(user1);
-        uint256 tokenId = _mintTo(mecha.MINT_PRICE());
+        uint256 tokenId = _mint(mecha.MINT_PRICE());
         Mecha.MechaAttributes memory attr = mecha.getAttributes(tokenId);
 
         assertGe(attr.strength, 1);
@@ -53,7 +53,7 @@ contract MechaMintingTest is MechaTest {
         vm.expectEmit();
         emit Transfer(address(0), address(user1), 1);
 
-        _mintTo(amount);
+        _mint(amount);
     }
 
     function testMintEventMechaMintedValid() public {
@@ -61,15 +61,15 @@ contract MechaMintingTest is MechaTest {
         vm.expectEmit(true, true, false, false);
         emit MechaMinted(user1, 1, 0, 0, 0, 0);
 
-        _mintTo(amount);
+        _mint(amount);
     }
 
     function testSameUserMintingIds() public {
         vm.prank(user1);
-        uint256 tokenId1 = _mintTo(amount);
+        uint256 tokenId1 = _mint(amount);
 
         vm.prank(user1);
-        uint256 tokenId2 = _mintTo(amount);
+        uint256 tokenId2 = _mint(amount);
 
         assertEq(tokenId1, 1);
         assertEq(tokenId2, 2);
@@ -77,13 +77,13 @@ contract MechaMintingTest is MechaTest {
 
     function testMultipleUsersMintingIds() public {
         vm.prank(user1);
-        uint256 tokenId1 = _mintTo(amount);
+        uint256 tokenId1 = _mint(amount);
 
         vm.prank(user2);
-        uint256 tokenId2 = _mintTo(amount);
+        uint256 tokenId2 = _mint(amount);
 
         vm.prank(user3);
-        uint256 tokenId3 = _mintTo(amount);
+        uint256 tokenId3 = _mint(amount);
 
         assertEq(tokenId1, 1);
         assertEq(tokenId2, 2);
@@ -92,13 +92,13 @@ contract MechaMintingTest is MechaTest {
 
     function testMintedAmount() public {
         vm.prank(user1);
-        _mintTo(amount);
+        _mint(amount);
 
         vm.prank(user2);
-        _mintTo(amount);
+        _mint(amount);
 
         vm.prank(user1);
-        _mintTo(amount);
+        _mint(amount);
 
         uint256 numOfUser1Tokens = mecha.balanceOf(user1);
         uint256 numOfUser2Tokens = mecha.balanceOf(user2);
